@@ -12,16 +12,16 @@ export class Game {
   private rockQuestions: Array<string> = []
 
   constructor() {
+    this.createQuestions()
+  }
+
+  private createQuestions() {
     for (let i = 0; i < 50; i++) {
       this.popQuestions.push("Pop Question " + i)
       this.scienceQuestions.push("Science Question " + i)
       this.sportsQuestions.push("Sports Question " + i)
-      this.rockQuestions.push(this.createRockQuestion(i))
+      this.rockQuestions.push("Rock Question " + i)
     }
-  }
-
-  private createRockQuestion(index: number): string {
-    return "Rock Question " + index
   }
 
   public add(name: string): boolean {
