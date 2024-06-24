@@ -45,25 +45,30 @@ export class Game {
     console.log("They have rolled a " + roll)
 
     if (this.inPenaltyBox[this.currentPlayer]) {
-      if (roll % 2 != 0) {
-        this.isGettingOutOfPenaltyBox = true
-
-        console.log(this.players[this.currentPlayer] + " is getting out of the penalty box")
-        this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
-        if (this.places[this.currentPlayer] > 11) {
-          this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
-        }
-
-        console.log(
-          this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]
-        )
-        console.log("The category is " + this.currentCategory())
-        this.askQuestion()
-      } else {
-        console.log(this.players[this.currentPlayer] + " is not getting out of the penalty box")
-        this.isGettingOutOfPenaltyBox = false
-      }
+      this.handlePenaltyBoxRoll(roll)
     } else {
+      this.handleRegularRoll(roll)
+    }
+  }
+
+  private handleRegularRoll(roll: number) {
+    this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
+    if (this.places[this.currentPlayer] > 11) {
+      this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
+    }
+
+    console.log(
+      this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]
+    )
+    console.log("The category is " + this.currentCategory())
+    this.askQuestion()
+  }
+
+  private handlePenaltyBoxRoll(roll: number) {
+    if (roll % 2 != 0) {
+      this.isGettingOutOfPenaltyBox = true
+
+      console.log(this.players[this.currentPlayer] + " is getting out of the penalty box")
       this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
       if (this.places[this.currentPlayer] > 11) {
         this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
@@ -74,6 +79,9 @@ export class Game {
       )
       console.log("The category is " + this.currentCategory())
       this.askQuestion()
+    } else {
+      console.log(this.players[this.currentPlayer] + " is not getting out of the penalty box")
+      this.isGettingOutOfPenaltyBox = false
     }
   }
 
