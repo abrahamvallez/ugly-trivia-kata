@@ -52,10 +52,7 @@ export class Game {
   }
 
   private handleRegularRoll(roll: number) {
-    this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
-    if (this.places[this.currentPlayer] > 11) {
-      this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
-    }
+    this.movePlayer(roll)
 
     console.log(
       this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]
@@ -64,25 +61,27 @@ export class Game {
     this.askQuestion()
   }
 
+  private movePlayer(roll: number) {
+    this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
+    if (this.places[this.currentPlayer] > 11) {
+      this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
+    }
+  }
+
   private handlePenaltyBoxRoll(roll: number) {
-    if (roll % 2 != 0) {
+    if (this.isRollOdd(roll)) {
       this.isGettingOutOfPenaltyBox = true
 
       console.log(this.players[this.currentPlayer] + " is getting out of the penalty box")
-      this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
-      if (this.places[this.currentPlayer] > 11) {
-        this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
-      }
-
-      console.log(
-        this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]
-      )
-      console.log("The category is " + this.currentCategory())
-      this.askQuestion()
+      this.handleRegularRoll(roll)
     } else {
       console.log(this.players[this.currentPlayer] + " is not getting out of the penalty box")
       this.isGettingOutOfPenaltyBox = false
     }
+  }
+
+  private isRollOdd(roll: number) {
+    return roll % 2 != 0
   }
 
   private askQuestion(): void {
