@@ -92,16 +92,22 @@ export class Game {
   }
 
   private currentCategory(): string {
-    if (this.places[this.currentPlayer] == 0) return "Pop"
-    if (this.places[this.currentPlayer] == 4) return "Pop"
-    if (this.places[this.currentPlayer] == 8) return "Pop"
-    if (this.places[this.currentPlayer] == 1) return "Science"
-    if (this.places[this.currentPlayer] == 5) return "Science"
-    if (this.places[this.currentPlayer] == 9) return "Science"
-    if (this.places[this.currentPlayer] == 2) return "Sports"
-    if (this.places[this.currentPlayer] == 6) return "Sports"
-    if (this.places[this.currentPlayer] == 10) return "Sports"
-    return "Rock"
+    switch (this.places[this.currentPlayer]) {
+      case 0:
+      case 4:
+      case 8:
+        return "Pop"
+      case 1:
+      case 5:
+      case 9:
+        return "Science"
+      case 2:
+      case 6:
+      case 10:
+        return "Sports"
+      default:
+        return "Rock"
+    }
   }
 
   private didPlayerWin(): boolean {
@@ -113,9 +119,13 @@ export class Game {
     console.log(this.players[this.currentPlayer] + " was sent to the penalty box")
     this.inPenaltyBox[this.currentPlayer] = true
 
+    this.nextPlayer()
+    return true
+  }
+
+  private nextPlayer() {
     this.currentPlayer += 1
     if (this.currentPlayer == this.players.length) this.currentPlayer = 0
-    return true
   }
 
   public wasCorrectlyAnswered(): boolean {
@@ -131,13 +141,11 @@ export class Game {
         )
 
         var winner = this.didPlayerWin()
-        this.currentPlayer += 1
-        if (this.currentPlayer == this.players.length) this.currentPlayer = 0
+        this.nextPlayer()
 
         return winner
       } else {
-        this.currentPlayer += 1
-        if (this.currentPlayer == this.players.length) this.currentPlayer = 0
+        this.nextPlayer()
         return true
       }
     } else {
@@ -153,8 +161,7 @@ export class Game {
 
       var winner = this.didPlayerWin()
 
-      this.currentPlayer += 1
-      if (this.currentPlayer == this.players.length) this.currentPlayer = 0
+      this.nextPlayer()
 
       return winner
     }
